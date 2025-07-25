@@ -1,0 +1,47 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+artifacts/
+
+# Visual Studio cache and user-specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet packages
+packages/
+*.nupkg
+
+# .NET Core specific
+project.lock.json
+project.fragment.lock.json
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+
+# ReSharper and other add-ins
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Local settings and configuration (if not intended for version control)
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+# You might want to include appsettings.json if it contains sensitive info
+# and is managed separately (e.g., via environment variables or Azure Key Vault)
+
+# Log files
+*.log
+logs/
+
+# Other common exclusions
+Thumbs.db
+Desktop.ini
+.DS_Store
