@@ -58,6 +58,8 @@ builder.Services.AddScoped<IJWTService, JWTService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserBusinessLogicService, UserBusinessLogicService>();
 builder.Services.AddScoped<IEmailMessager, EmailMessager>();
+builder.Services.AddScoped<ICreditRepository, CreditRepository>();
+builder.Services.AddScoped<ICreditBusinessLogicService, CreditBusinessLogicService>();
 
 var app = builder.Build();
 
