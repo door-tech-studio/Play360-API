@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PayFast;
 using play_360.EF.Contexts;
 using play_360.Services.Abstration;
 using play_360.Services.Abstration.BusinessLogic;
@@ -23,6 +23,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 var connectionString = builder.Configuration.GetConnectionString("Play360DBConnection");
 builder.Services.AddDbContext<Play360Context>(options => options.UseSqlServer(connectionString));
+
+builder.Services.Configure<PayFastSettings>(builder.Configuration.GetSection("PayFastSettings"));
+builder.Services.AddPayFastIntegration();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -85,6 +88,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
