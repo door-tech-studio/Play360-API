@@ -62,6 +62,8 @@ builder.Services.AddScoped<ICreditRepository, CreditRepository>();
 builder.Services.AddScoped<ICreditBusinessLogicService, CreditBusinessLogicService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionBusinessLogicService, TransactionBusinessLogicService>();
+builder.Services.AddScoped<IWellnessCheckinQuestionRepository, WellnessCheckinQuestionRepository> ();
+builder.Services.AddScoped<IWellnessCheckinQuestionBusinessLogicService, WellnessCheckinQuestionBusinessLogicService>();
 
 
 var app = builder.Build();

@@ -9,8 +9,15 @@ namespace play_360.EF.Contexts
         public DbSet<User> Users {  get; set; }
         public DbSet<Credit> Credits { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        
         public DbSet<UserAchievement> Achievements { get; set; }
+        public DbSet<WellnessMultipleChoiceQuestion> WellnessMultipleChoiceQuestion { get; set; }
+        public DbSet<WellnessMultipleChoiceAnswer> WellnessMultipleChoiceAnswer { get; set; }
+        public DbSet<WellnessScaleQuestion> WellnessScaleQuestion { get; set; }
+        public DbSet<WellnessScaleQuestionAnswer> WellnessScaleQuestionAnswer { get; set; }
+        public DbSet<WellnessBooleanQuestion> WellnessBooleanQuestion { get; set; }
+        public DbSet<WellnessBooleanQuestionAnswer> WellnessBooleanQuestionAnswer { get; set; }
+        public DbSet<WellnessMultipleChoiceCheckinResponse> WellnessMultipleChoiceCheckinResponse { get; set; }
+        public DbSet<WellnessCheckin> WellnessCheckin { get; set; }
 
         public Play360Context(DbContextOptions<Play360Context> options) : base(options) { }
 

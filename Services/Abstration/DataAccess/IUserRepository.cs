@@ -6,5 +6,6 @@ namespace play_360.Services.Abstration.DataAccess
     {
         public Task<User> GetUserByEmail(string Email);
         public Task<int> AddUser(User user);
+        public Task<User> GetUserById(int Id);
     }
 }
