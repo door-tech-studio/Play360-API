@@ -6,7 +6,6 @@
         public int WellnessResponseId { get; set; }
         public int QuestionTypeId { get; set; }
         public int AgeGroupId { get; set; }
-        public int SportTypeId { get; set; }
         public string QuestionText { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

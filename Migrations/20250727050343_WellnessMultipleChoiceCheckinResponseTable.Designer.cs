@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using play_360.EF.Contexts;
 
@@ -11,9 +12,11 @@ using play_360.EF.Contexts;
 namespace play_360.Migrations
 {
     [DbContext(typeof(Play360Context))]
-    partial class Play360ContextModelSnapshot : ModelSnapshot
+    [Migration("20250727050343_WellnessMultipleChoiceCheckinResponseTable")]
+    partial class WellnessMultipleChoiceCheckinResponseTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -649,88 +652,6 @@ namespace play_360.Migrations
                     b.ToTable("Achievements");
                 });
 
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AgeGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FrequencyTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("QuestionCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WellnessBooleanQuestion");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WellnessBooleanQuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellnessBooleanQuestionId");
-
-                    b.ToTable("WellnessBooleanQuestionAnswer");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionCheckinResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessBooleanAnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessBooleanQuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessCheckinId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WellnessBooleanQuestionCheckinResponse");
-                });
-
             modelBuilder.Entity("play_360.EF.Models.WellnessCheckin", b =>
                 {
                     b.Property<int>("Id")
@@ -770,7 +691,7 @@ namespace play_360.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AnswerText")
+                    b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -791,9 +712,6 @@ namespace play_360.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -904,91 +822,6 @@ namespace play_360.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WellnessResponse");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AgeGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FrequencyTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("QuestionCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WellnessScaleQuestion");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestionAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("WellnessScaleQuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellnessScaleQuestionId");
-
-                    b.ToTable("WellnessScaleQuestionAnswer");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestionCheckinResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessCheckinId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessScaleAnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessScaleQuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WellnessScaleQuestionCheckinResponse");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessWeeklySummary", b =>
@@ -1188,17 +1021,6 @@ namespace play_360.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionAnswer", b =>
-                {
-                    b.HasOne("play_360.EF.Models.WellnessBooleanQuestion", "WellnessBooleanQuestion")
-                        .WithMany("WellnessBooleanQuestionAnswers")
-                        .HasForeignKey("WellnessBooleanQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WellnessBooleanQuestion");
-                });
-
             modelBuilder.Entity("play_360.EF.Models.WellnessCheckin", b =>
                 {
                     b.HasOne("play_360.EF.Models.User", "User")
@@ -1238,17 +1060,6 @@ namespace play_360.Migrations
                     b.Navigation("User");
 
                     b.Navigation("WellnessQuestion");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestionAnswer", b =>
-                {
-                    b.HasOne("play_360.EF.Models.WellnessScaleQuestion", "WellnessScaleQuestion")
-                        .WithMany("WellnessScaleQuestionAnswers")
-                        .HasForeignKey("WellnessScaleQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WellnessScaleQuestion");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessWeeklySummary", b =>
@@ -1307,11 +1118,6 @@ namespace play_360.Migrations
                     b.Navigation("WellnessWeeklySummaries");
                 });
 
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestion", b =>
-                {
-                    b.Navigation("WellnessBooleanQuestionAnswers");
-                });
-
             modelBuilder.Entity("play_360.EF.Models.WellnessMultipleChoiceQuestion", b =>
                 {
                     b.Navigation("WellnessMultipleChoiceAnswers");
@@ -1320,11 +1126,6 @@ namespace play_360.Migrations
             modelBuilder.Entity("play_360.EF.Models.WellnessQuestion", b =>
                 {
                     b.Navigation("WellnessResponses");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestion", b =>
-                {
-                    b.Navigation("WellnessScaleQuestionAnswers");
                 });
 #pragma warning restore 612, 618
         }
