@@ -60,6 +60,9 @@ builder.Services.AddScoped<IUserBusinessLogicService, UserBusinessLogicService>(
 builder.Services.AddScoped<IEmailMessager, EmailMessager>();
 builder.Services.AddScoped<ICreditRepository, CreditRepository>();
 builder.Services.AddScoped<ICreditBusinessLogicService, CreditBusinessLogicService>();
+builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
+builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
+
 
 var app = builder.Build();
 

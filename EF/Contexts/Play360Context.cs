@@ -8,7 +8,7 @@ namespace play_360.EF.Contexts
     {
         public DbSet<User> Users {  get; set; }
         public DbSet<Credit> Credits { get; set; }
-        public DbSet<UserAchievement> Achievements { get; set; }
+        public DbSet<UserAchievement> UserAchievement { get; set; }
 
         public Play360Context(DbContextOptions<Play360Context> options) : base(options) { }
 
