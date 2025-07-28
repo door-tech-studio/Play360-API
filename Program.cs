@@ -64,6 +64,8 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionBusinessLogicService, TransactionBusinessLogicService>();
 builder.Services.AddScoped<IWellnessCheckinQuestionRepository, WellnessCheckinQuestionRepository> ();
 builder.Services.AddScoped<IWellnessCheckinQuestionBusinessLogicService, WellnessCheckinQuestionBusinessLogicService>();
+builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
+builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
 
 
 var app = builder.Build();
