@@ -31,5 +31,28 @@ namespace play_360.Controllers
             };
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("GetUserAchievementByUserId/{userId}")]
+        public async Task<ActionResult<DataResponseDTO>> GetUserAchievementByUserId([FromRoute]int userId)
+        {
+            var dataResponse = new DataResponseDTO();
+            var allUserAchievements = await _AcheivementBusinessLogicService.GetByUserId(userId);
+
+            if (allUserAchievements == null)
+            {
+                dataResponse.Message = "Could not load User Achievements";
+                dataResponse.Data = null;
+                dataResponse.IsSuccessful = false;
+
+                return Ok(dataResponse);
+            }
+
+            dataResponse.Message = "All User Achievements";
+            dataResponse.Data = allUserAchievements;
+            dataResponse.IsSuccessful = true;
+
+            return Ok(dataResponse);
+        }
     }
 }

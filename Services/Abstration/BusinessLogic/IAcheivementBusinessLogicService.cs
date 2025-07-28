@@ -6,5 +6,8 @@ namespace play_360.Services.Abstration.BusinessLogic
     {
         public Task<IList<UserAchievement>> GetAll();
 
+        public Task<IList<UserAchievement>> GetByUserId(int UserId);
+
+
     }
 }

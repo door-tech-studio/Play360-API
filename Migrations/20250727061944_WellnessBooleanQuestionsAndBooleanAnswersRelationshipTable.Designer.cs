@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using play_360.EF.Contexts;
 
@@ -11,9 +12,11 @@ using play_360.EF.Contexts;
 namespace play_360.Migrations
 {
     [DbContext(typeof(Play360Context))]
-    partial class Play360ContextModelSnapshot : ModelSnapshot
+    [Migration("20250727061944_WellnessBooleanQuestionsAndBooleanAnswersRelationshipTable")]
+    partial class WellnessBooleanQuestionsAndBooleanAnswersRelationshipTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -646,7 +649,7 @@ namespace play_360.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAchievement");
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestion", b =>
@@ -701,34 +704,6 @@ namespace play_360.Migrations
                     b.HasIndex("WellnessBooleanQuestionId");
 
                     b.ToTable("WellnessBooleanQuestionAnswer");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionCheckinResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessBooleanAnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessBooleanQuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WellnessCheckinId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WellnessBooleanQuestionCheckinResponse");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessCheckin", b =>

@@ -3,6 +3,7 @@ using play_360.EF.Contexts;
 using play_360.EF.Models;
 using play_360.Services.Abstration.DataAccess;
 
+
 namespace play_360.Services.Concrete.DataAccess
 {
     public class AcheivementRepository : IAcheivementRepository
@@ -18,5 +19,13 @@ namespace play_360.Services.Concrete.DataAccess
 
             return allAcheivments;
         }
+
+        public async Task<IList<UserAchievement>> GetByUserId(int UserId)
+        {
+            var allUserAcheivments = await _Play360Context.UserAchievement.Where(user => user.UserId == UserId).ToListAsync();
+            return allUserAcheivments;
+
+        }
+
     }
 }

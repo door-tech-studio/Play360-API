@@ -10,7 +10,7 @@ namespace play_360.Services.Concrete.Messaging
         {
             try
             {
-                using (var smtpClient = new SmtpClient("smtp.example.com", 587))
+                using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
                 {
                     smtpClient.Credentials = new NetworkCredential("username", "password");
                     smtpClient.EnableSsl = true;

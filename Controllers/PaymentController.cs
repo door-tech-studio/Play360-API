@@ -7,6 +7,7 @@ using PayFast.AspNetCore;
 using play_360.DTOs;
 using play_360.EF.Models;
 using play_360.Services.Abstration.BusinessLogic;
+using play_360.Services.Concrete.BusinessLogic;
 
 namespace play_360.Controllers
 {
@@ -17,15 +18,18 @@ namespace play_360.Controllers
         private readonly PayFastSettings _PayFastSettings;
         private readonly ICreditBusinessLogicService _CreditBusinessLogicService;
         private readonly IUserBusinessLogicService _UserBusinessLogicService;
+        private readonly ITransactionBusinessLogicService _TransactionBusinessLogicService;
         public PaymentController(
             PayFastSettings PayFastSettings, 
             ICreditBusinessLogicService CreditBusinessLogicService,
-            IUserBusinessLogicService UserBusinessLogicService
+            IUserBusinessLogicService UserBusinessLogicService,
+            ITransactionBusinessLogicService TransactionBusinessLogicService
         ) 
         {
             _PayFastSettings = PayFastSettings;
             _CreditBusinessLogicService = CreditBusinessLogicService;
             _UserBusinessLogicService = UserBusinessLogicService;
+            _TransactionBusinessLogicService = TransactionBusinessLogicService;
         }
 
         [HttpPost]
@@ -73,6 +77,15 @@ namespace play_360.Controllers
                 };
 
                 var isCreditAdded = await _CreditBusinessLogicService.AddCredit(credit);
+
+                var Transaction = new Transaction()
+                {
+                    CreditId = credit.Id,
+                    UserId = user.Id,
+                    Amount = credit.Amount / 100,
+                };
+
+                var isTransactionAdded = await _TransactionBusinessLogicService.AddTransaction(Transaction);
             }
 
 

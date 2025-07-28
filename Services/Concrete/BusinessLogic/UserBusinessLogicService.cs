@@ -18,6 +18,11 @@ namespace play_360.Services.Concrete.BusinessLogic
             return await _UserRepository.GetUserByEmail(Email);
         }
 
+        public async Task<User> GetUserById(int Id)
+        {
+            return await _UserRepository.GetUserById(Id);
+        }
+
         public async Task<int> AddUser(User user)
         {
             var isUserAdded = await _UserRepository.AddUser(user);

@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             {
                 if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                 {
-                    context.Request.Headers.Add("IS-TOKEN-EXPIRED", "true");
+                    context.Request.Headers.Append("IS-TOKEN-EXPIRED", "true");
                 }
                 return Task.CompletedTask;
             }
@@ -60,6 +60,10 @@ builder.Services.AddScoped<IUserBusinessLogicService, UserBusinessLogicService>(
 builder.Services.AddScoped<IEmailMessager, EmailMessager>();
 builder.Services.AddScoped<ICreditRepository, CreditRepository>();
 builder.Services.AddScoped<ICreditBusinessLogicService, CreditBusinessLogicService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ITransactionBusinessLogicService, TransactionBusinessLogicService>();
+builder.Services.AddScoped<IWellnessCheckinQuestionRepository, WellnessCheckinQuestionRepository> ();
+builder.Services.AddScoped<IWellnessCheckinQuestionBusinessLogicService, WellnessCheckinQuestionBusinessLogicService>();
 builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
 builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
 
