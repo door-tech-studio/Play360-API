@@ -36,6 +36,8 @@ namespace play_360.Services.Concrete.DataAccess
                         wellnessMultipleChoiceQuestionAndAnswers.WellnessMultipleChoiceAnswers.Add(answer);
                     }
                 }
+
+                allMultipleChoiceQuestionsAndAnswers.Add(wellnessMultipleChoiceQuestionAndAnswers);
             }
 
             return allMultipleChoiceQuestionsAndAnswers;
@@ -63,6 +65,7 @@ namespace play_360.Services.Concrete.DataAccess
                         wellnessMultipleChoiceQuestionAndAnswers.WellnessScaleQuestionAnswers.Add(answer);
                     }
                 }
+                allScaleQuestionsAndAnswers.Add(wellnessMultipleChoiceQuestionAndAnswers);
             }
 
             return allScaleQuestionsAndAnswers;
@@ -90,6 +93,7 @@ namespace play_360.Services.Concrete.DataAccess
                         wellnessBooleanQuestionAndAnswers.WellnessBooleanQuestionAnswers.Add(answer);
                     }
                 }
+                allBooleanQuestionsAndAnswers.Add(wellnessBooleanQuestionAndAnswers);
             }
 
             return allBooleanQuestionsAndAnswers;
@@ -99,13 +103,23 @@ namespace play_360.Services.Concrete.DataAccess
         {
             await _Play360Context.WellnessCheckin.AddAsync(wellnessCheckin);
             await _Play360Context.SaveChangesAsync();
-            int insertedUserId = wellnessCheckin.Id;
-            return insertedUserId;
+            int insertedWellnessCheckinId = wellnessCheckin.Id;
+            return insertedWellnessCheckinId;
         }
 
         public async Task AddMultipleChoiceCheckinResponses(IList<WellnessMultipleChoiceCheckinResponse> wellnessMultipleChoiceCheckinResponses)
         {
             await _Play360Context.WellnessMultipleChoiceCheckinResponse.AddRangeAsync(wellnessMultipleChoiceCheckinResponses);
+        }
+
+        public async Task AddScaleCheckinResponses(IList<WellnessScaleQuestionCheckinResponse> wellnessScaleCheckinResponses)
+        {
+            await _Play360Context.WellnessScaleQuestionCheckinResponse.AddRangeAsync(wellnessScaleCheckinResponses);
+        }
+
+        public async Task AddBooleanCheckinResponses(IList<WellnessBooleanQuestionCheckinResponse> wellnessBooleanCheckinResponses)
+        {
+            await _Play360Context.WellnessBooleanQuestionCheckinResponse.AddRangeAsync(wellnessBooleanCheckinResponses);
         }
     }
 }

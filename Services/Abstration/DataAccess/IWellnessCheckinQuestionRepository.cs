@@ -10,5 +10,7 @@ namespace play_360.Services.Abstration.DataAccess
         public Task<IList<WellnessBooleanQuestionsAndAnswers>> GetBooleanQuestionsAndAnswers();
         public Task<int> AddWellnessCheckin(WellnessCheckin wellnessCheckin);
         public Task AddMultipleChoiceCheckinResponses(IList<WellnessMultipleChoiceCheckinResponse> wellnessMultipleChoiceCheckinResponses);
+        public Task AddScaleCheckinResponses(IList<WellnessScaleQuestionCheckinResponse> wellnessScaleCheckinResponses);
+        public Task AddBooleanCheckinResponses(IList<WellnessBooleanQuestionCheckinResponse> wellnessBooleanCheckinResponses);
     }
 }

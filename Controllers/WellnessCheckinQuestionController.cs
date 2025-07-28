@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using play_360.DTOs;
 using play_360.EF.Models;
@@ -40,9 +41,9 @@ namespace play_360.Controllers
                 allBooleanQuestionsAndAnswers is null
             )
             {
-                responseDTO.Message = "Wellness Questions";
-                responseDTO.Data = wellnessQuestionsAndAnswersDTO;
-                responseDTO.IsSuccessful = true;
+                responseDTO.Message = "Wellness questions could not be loaded.";
+                responseDTO.Data = null;
+                responseDTO.IsSuccessful = false;
                 return BadRequest(responseDTO);
             }
 
@@ -67,7 +68,7 @@ namespace play_360.Controllers
 
             var multipleChoiceQuestionResponses = new List<WellnessMultipleChoiceCheckinResponse>();
             var scaleQuestionResponses = new List<WellnessScaleQuestionCheckinResponse>();
-            var booleanResponses = new List<WellnessBooleanQuestionCheckinResponse>();
+            var booleanQuestionResponses = new List<WellnessBooleanQuestionCheckinResponse>();
 
             var wellnessCheckin = new WellnessCheckin()
             {
@@ -123,11 +124,13 @@ namespace play_360.Controllers
                         CreatedAt = DateTime.Now
                     };
 
-                    booleanResponses.Add(booleanQuestionResponse);
+                    booleanQuestionResponses.Add(booleanQuestionResponse);
                 }
             }
 
             await _WellnessCheckinQuestionBusinessLogicService.AddMultipleChoiceCheckinResponses(multipleChoiceQuestionResponses);
+            await _WellnessCheckinQuestionBusinessLogicService.AddScaleCheckinResponses(scaleQuestionResponses);
+            await _WellnessCheckinQuestionBusinessLogicService.AddBooleanCheckinResponses(booleanQuestionResponses);
 
             return Ok(responseDTO);
         }

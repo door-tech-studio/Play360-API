@@ -1,4 +1,5 @@
-﻿using play_360.EF.Models;
+﻿using play_360.EF.Contexts;
+using play_360.EF.Models;
 using play_360.ProjectModels;
 using play_360.Services.Abstration.BusinessLogic;
 using play_360.Services.Abstration.DataAccess;
@@ -40,6 +41,16 @@ namespace play_360.Services.Concrete.BusinessLogic
         public async Task AddMultipleChoiceCheckinResponses(IList<WellnessMultipleChoiceCheckinResponse> wellnessMultipleChoiceCheckinResponses)
         {
             await _WellnessCheckinQuestionRepository.AddMultipleChoiceCheckinResponses(wellnessMultipleChoiceCheckinResponses);
+        }
+
+        public async Task AddScaleCheckinResponses(IList<WellnessScaleQuestionCheckinResponse> wellnessScaleCheckinResponses)
+        {
+            await _WellnessCheckinQuestionRepository.AddScaleCheckinResponses(wellnessScaleCheckinResponses);
+        }
+
+        public async Task AddBooleanCheckinResponses(IList<WellnessBooleanQuestionCheckinResponse> wellnessBooleanCheckinResponses)
+        {
+            await _WellnessCheckinQuestionRepository.AddBooleanCheckinResponses(wellnessBooleanCheckinResponses);
         }
     }
 }
