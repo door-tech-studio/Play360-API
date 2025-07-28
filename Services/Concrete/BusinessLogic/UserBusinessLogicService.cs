@@ -28,5 +28,10 @@ namespace play_360.Services.Concrete.BusinessLogic
             var isUserAdded = await _UserRepository.AddUser(user);
             return isUserAdded;
         }
+
+        public async Task<bool> IsUserExist(string userEmail)
+        {
+            return await _UserRepository.IsUserExist(userEmail);
+        }
     }
 }

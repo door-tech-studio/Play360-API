@@ -8,5 +8,7 @@ namespace play_360.Services.Abstration.BusinessLogic
 
         public Task<User> GetUserById(int Id);
         public Task<int> AddUser(User user);
+
+        public Task<bool> IsUserExist(string userEmail);
     }
 }

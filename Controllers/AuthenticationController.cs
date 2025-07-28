@@ -32,8 +32,8 @@ namespace play_360.Controllers
         public async Task<ActionResult<DataResponseDTO>> Login(LoginDTO loginDTO)
         {
 
-            var token = _IJWTService.GenerateToken(loginDTO.Email);
             var responseData = new DataResponseDTO();
+            var token = _IJWTService.GenerateToken(loginDTO.Email);
 
             if (token == null)
             {
@@ -48,22 +48,20 @@ namespace play_360.Controllers
             {
                 responseData.Message = "Could not login. User Not found.";
                 responseData.Data = null;
-                return NotFound(responseData);
+                responseData.IsSuccessful = false;
+                return Ok(responseData);
             }
 
-            if (user != null)
+            var loginResponse = new LoginResponseDTO
             {
+                Email = loginDTO.Email,
+                UserId = user.Id,
+                Token = token
+            };
 
-                var loginResponse = new LoginResponseDTO
-                {
-                    Email = loginDTO.Email,
-                    UserId = user.Id,
-                    Token = token
-                };
-
-                responseData.Message = "User Found";
-                responseData.Data = loginResponse;
-            }
+            responseData.Message = "User Found";
+            responseData.Data = loginResponse;
+            responseData.IsSuccessful = true;
 
             return Ok(responseData);
         }
@@ -99,21 +97,27 @@ namespace play_360.Controllers
                 UpdatedAt = DateTime.UtcNow,
             };
 
-            var isUserAdded = await _UserBusinessLogicService.AddUser(user);
+            var isUserExist = await _UserBusinessLogicService.IsUserExist(registerDTO.Email);
+            if (isUserExist) 
+            {
+                DataResponse.Message = "User already exists";
+                DataResponse.Data = null;
+                DataResponse.IsSuccessful = false;
+                return Ok(DataResponse);
+            }
 
+            var isUserAdded = await _UserBusinessLogicService.AddUser(user);
             if (isUserAdded == 0)
             {
                 DataResponse.Message = "Could Not Add User.";
                 DataResponse.IsSuccessful = false;
                 DataResponse.Data = isUserAdded;
+                return Ok(DataResponse);
             }
 
-            if (isUserAdded == 1)
-            {
-                DataResponse.Message = "User Added.";
-                DataResponse.IsSuccessful = true;
-                DataResponse.Data = isUserAdded;
-            }
+            DataResponse.Message = "User Added.";
+            DataResponse.IsSuccessful = true;
+            DataResponse.Data = isUserAdded;
 
             return Ok(DataResponse);
         }
