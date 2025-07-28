@@ -19,6 +19,12 @@ namespace play_360.Services.Concrete.DataAccess
             return user!;
         }
 
+        public async Task<User> GetUserByReferralCode(string referralCode)
+        {
+            var user = await _DbContext.Users.Where(user => user.ReferralCode == referralCode).FirstOrDefaultAsync();
+            return user!;
+        }
+
         public async Task<User> GetUserById(int Id)
         {
             var user = await _DbContext.Users.Where(user => user.Id == Id).FirstOrDefaultAsync();
@@ -28,9 +34,10 @@ namespace play_360.Services.Concrete.DataAccess
         public async Task<int> AddUser(User user)
         {
             await _DbContext.Users.AddAsync(user);
-            var savedflag = await _DbContext.SaveChangesAsync();
+            await _DbContext.SaveChangesAsync();
+            var userId = user.Id;
 
-            return savedflag;
+            return userId;
         }
 
         public async Task<bool> IsUserExist(string userEmail)

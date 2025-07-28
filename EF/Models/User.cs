@@ -7,12 +7,13 @@
         public string Password { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public DateTime? DateOfBirth { get; set; }
         public string? ProfilePhoto { get; set; }
         public string? Bio { get; set; }
         public bool IsPopiAccepting { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string? IdentityNumber { get; set; }
+        public string? ReferralCode { get; set; }
 
         public ICollection<Credit> Credits { get; } = new List<Credit>();
         public ICollection<Referral> Referrals { get; } = new List<Referral>();

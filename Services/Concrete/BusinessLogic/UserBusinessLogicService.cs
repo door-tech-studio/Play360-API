@@ -18,6 +18,11 @@ namespace play_360.Services.Concrete.BusinessLogic
             return await _UserRepository.GetUserByEmail(Email);
         }
 
+        public async Task<User> GetUserByReferralCode(string referralCode)
+        {
+            return await _UserRepository.GetUserByReferralCode(referralCode);
+        }
+
         public async Task<User> GetUserById(int Id)
         {
             return await _UserRepository.GetUserById(Id);

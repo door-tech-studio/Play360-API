@@ -11,7 +11,6 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.ReffererUserId).IsRequired();
             builder.Property(property => property.RefferedUserId).IsRequired();
             builder.Property(property => property.ReferralStatusId).IsRequired();
-            builder.Property(property => property.ReferralCode).IsRequired();
             builder.Property(property => property.CreatedAt).IsRequired();
 
             builder

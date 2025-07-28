@@ -5,6 +5,7 @@ using play_360.EF.Models;
 using play_360.Services.Abstration;
 using play_360.Services.Abstration.BusinessLogic;
 using play_360.Services.Abstration.Messaging;
+using play_360.Services.Concrete.BusinessLogic;
 
 namespace play_360.Controllers
 {
@@ -15,15 +16,18 @@ namespace play_360.Controllers
         private readonly IJWTService _IJWTService;
         private readonly IUserBusinessLogicService _UserBusinessLogicService;
         private readonly IEmailMessager _EmailMessager;
+        private readonly IReferralBusinessLogicService _ReferralBusinessLogicService;
         public AuthenticationController(
             IJWTService IJWTService,
             IUserBusinessLogicService UserBusinessLogicService,
-            IEmailMessager EmailMessager
+            IEmailMessager EmailMessager,
+            IReferralBusinessLogicService ReferralBusinessLogicService
         ) 
         { 
             _IJWTService = IJWTService;
             _UserBusinessLogicService = UserBusinessLogicService;
             _EmailMessager = EmailMessager;
+            _ReferralBusinessLogicService = ReferralBusinessLogicService;
         }
 
         [AllowAnonymous]        
@@ -85,7 +89,7 @@ namespace play_360.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<DataResponseDTO>> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult<DataResponseDTO>> Register([FromBody] RegisterDTO registerDTO)
         {
             var DataResponse = new DataResponseDTO();
             var user = new User()
@@ -106,18 +110,49 @@ namespace play_360.Controllers
                 return Ok(DataResponse);
             }
 
-            var isUserAdded = await _UserBusinessLogicService.AddUser(user);
-            if (isUserAdded == 0)
+            User? referrerUser = null;
+            if (registerDTO.ReferrerCode != null)
+            {
+                referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
+                if (referrerUser == null) 
+                {
+                    DataResponse.Message = "Reference Code does not exist";
+                    DataResponse.Data = null;
+                    DataResponse.IsSuccessful = false;
+                    return Ok(DataResponse);
+                }
+            }
+
+            var registeredUser = await _UserBusinessLogicService.AddUser(user);
+            if (registeredUser == 0)
             {
                 DataResponse.Message = "Could Not Add User.";
                 DataResponse.IsSuccessful = false;
-                DataResponse.Data = isUserAdded;
+                DataResponse.Data = null;
+                return Ok(DataResponse);
+            }
+
+            var referral = new Referral() 
+            { 
+                ReffererUserId = referrerUser.Id,
+                RefferedUserId = registeredUser,
+                ReferralStatusId = 1,
+                CreatedAt = DateTime.Now
+            };
+
+            var isReferralIserted = await _ReferralBusinessLogicService.Add(referral);
+
+            if (isReferralIserted == 0)
+            {
+                DataResponse.Message = "Could Not Add Referral.";
+                DataResponse.IsSuccessful = false;
+                DataResponse.Data = null;
                 return Ok(DataResponse);
             }
 
             DataResponse.Message = "User Added.";
             DataResponse.IsSuccessful = true;
-            DataResponse.Data = isUserAdded;
+            DataResponse.Data = registeredUser;
 
             return Ok(DataResponse);
         }

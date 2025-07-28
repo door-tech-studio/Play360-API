@@ -66,6 +66,8 @@ builder.Services.AddScoped<IWellnessCheckinQuestionRepository, WellnessCheckinQu
 builder.Services.AddScoped<IWellnessCheckinQuestionBusinessLogicService, WellnessCheckinQuestionBusinessLogicService>();
 builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
 builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
+builder.Services.AddScoped<IReferralRepositoryService, ReferralRepositoryService>();
+builder.Services.AddScoped<IReferralBusinessLogicService, ReferralBusinessLogicService>();
 
 
 var app = builder.Build();
