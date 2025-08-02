@@ -32,6 +32,11 @@ namespace play_360.Services.Concrete.BusinessLogic
             return allBooleanQuestionsAndAnswers;
         }
 
+        public async Task<IList<WellnessOpenEndedQuestion>> GetOpenEndedQuestionsAndAnswers()
+        {
+            var allBooleanQuestionsAndAnswers = await _WellnessCheckinQuestionRepository.GetOpenEndedQuestionsAndAnswers();
+            return allBooleanQuestionsAndAnswers;
+        }
         public async Task<int> AddWellnessCheckin(WellnessCheckin wellnessCheckin)
         {
             var wellnessCheckInId = await _WellnessCheckinQuestionRepository.AddWellnessCheckin(wellnessCheckin);
@@ -51,6 +56,11 @@ namespace play_360.Services.Concrete.BusinessLogic
         public async Task AddBooleanCheckinResponses(IList<WellnessBooleanQuestionCheckinResponse> wellnessBooleanCheckinResponses)
         {
             await _WellnessCheckinQuestionRepository.AddBooleanCheckinResponses(wellnessBooleanCheckinResponses);
+        }
+
+        public async Task AddOpenEndedCheckinResponses(IList<WellnessOpenEndedQuestionCheckinResponse> wellnessOpenEndedCheckinResponses)
+        {
+            await _WellnessCheckinQuestionRepository.AddOpenEndedCheckinResponses(wellnessOpenEndedCheckinResponses);
         }
     }
 }

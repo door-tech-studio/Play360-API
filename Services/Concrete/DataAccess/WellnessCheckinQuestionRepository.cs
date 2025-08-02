@@ -41,6 +41,11 @@ namespace play_360.Services.Concrete.DataAccess
             return getBooleanQuestions;
         }
 
+        public async Task<IList<WellnessOpenEndedQuestion>> GetOpenEndedQuestionsAndAnswers()
+        {
+            var allOpenEndedQuestion = await _Play360Context.WellnessOpenEndedQuestion.ToListAsync();
+            return allOpenEndedQuestion;
+        }
         public async Task<int> AddWellnessCheckin(WellnessCheckin wellnessCheckin)
         {
             await _Play360Context.WellnessCheckin.AddAsync(wellnessCheckin);
@@ -62,6 +67,11 @@ namespace play_360.Services.Concrete.DataAccess
         public async Task AddBooleanCheckinResponses(IList<WellnessBooleanQuestionCheckinResponse> wellnessBooleanCheckinResponses)
         {
             await _Play360Context.WellnessBooleanQuestionCheckinResponse.AddRangeAsync(wellnessBooleanCheckinResponses);
+        }
+
+        public async Task AddOpenEndedCheckinResponses(IList<WellnessOpenEndedQuestionCheckinResponse> wellnessOpenEndedCheckinResponses)
+        {
+            await _Play360Context.WellnessOpenEndedQuestionCheckinResponse.AddRangeAsync(wellnessOpenEndedCheckinResponses);
         }
     }
 }

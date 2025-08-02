@@ -34,11 +34,13 @@ namespace play_360.Controllers
             var allMultipleChoiceQuestionsAndAnswers = await _WellnessCheckinQuestionBusinessLogicService.GetMultipleChoiceQuestionsAndAnswers();
             var allScaleQuestionsAndAnswers = await _WellnessCheckinQuestionBusinessLogicService.GetScaleQuestionsAndAnswers();
             var allBooleanQuestionsAndAnswers = await _WellnessCheckinQuestionBusinessLogicService.GetBooleanQuestionsAndAnswers();
+            var allOpenEndedQuestionsAndAnswers = await _WellnessCheckinQuestionBusinessLogicService.GetOpenEndedQuestionsAndAnswers();
 
             if (
                 allMultipleChoiceQuestionsAndAnswers is null || 
                 allScaleQuestionsAndAnswers is null  || 
-                allBooleanQuestionsAndAnswers is null
+                allBooleanQuestionsAndAnswers is null ||
+                allOpenEndedQuestionsAndAnswers is null
             )
             {
                 responseDTO.Message = "Wellness questions could not be loaded.";
@@ -50,6 +52,7 @@ namespace play_360.Controllers
             wellnessQuestionsAndAnswersDTO.WellnessMultipleChoiceQuestionsAndAnswers = allMultipleChoiceQuestionsAndAnswers;
             wellnessQuestionsAndAnswersDTO.WellnessScaleQuestionsAndAnswers = allScaleQuestionsAndAnswers;
             wellnessQuestionsAndAnswersDTO.WellnessBooleanQuestionsAndAnswers = allBooleanQuestionsAndAnswers;
+            wellnessQuestionsAndAnswersDTO.WellnessOpenEndedQuestionsAndAnswers = allOpenEndedQuestionsAndAnswers;
 
             responseDTO.Message = "Wellness Questions";
             responseDTO.Data = wellnessQuestionsAndAnswersDTO;
@@ -69,6 +72,7 @@ namespace play_360.Controllers
             var multipleChoiceQuestionResponses = new List<WellnessMultipleChoiceCheckinResponse>();
             var scaleQuestionResponses = new List<WellnessScaleQuestionCheckinResponse>();
             var booleanQuestionResponses = new List<WellnessBooleanQuestionCheckinResponse>();
+            var openEndedQuestionResponses = new List<WellnessOpenEndedQuestionCheckinResponse>();
 
             var wellnessCheckin = new WellnessCheckin()
             {
@@ -91,7 +95,7 @@ namespace play_360.Controllers
                     {
                         UserId = wellnessResponseQuestionsDTO.UserId,
                         WellnessMultipleChoiceQuestionId = questionResponse.QuestionId,
-                        WellnessMultipleChoiceAnswerId = questionResponse.AnswerId,
+                        WellnessMultipleChoiceAnswerId = (int)questionResponse.Response,
                         WellnessCheckinId = wellnesssCheckinId,
                         CreatedAt = DateTime.Now
                     };
@@ -105,7 +109,7 @@ namespace play_360.Controllers
                     {
                         UserId = wellnessResponseQuestionsDTO.UserId,
                         WellnessScaleQuestionId = questionResponse.QuestionId,
-                        WellnessScaleAnswerId = questionResponse.AnswerId,
+                        WellnessScaleAnswerId = (int)questionResponse.Response,
                         WellnessCheckinId = wellnesssCheckinId,
                         CreatedAt = DateTime.Now
                     };
@@ -119,18 +123,32 @@ namespace play_360.Controllers
                     {
                         UserId = wellnessResponseQuestionsDTO.UserId,
                         WellnessBooleanQuestionId = questionResponse.QuestionId,
-                        WellnessBooleanAnswerId = questionResponse.AnswerId,
+                        WellnessBooleanAnswerId = (int)questionResponse.Response,
                         WellnessCheckinId = wellnesssCheckinId,
                         CreatedAt = DateTime.Now
                     };
 
                     booleanQuestionResponses.Add(booleanQuestionResponse);
                 }
+
+                if (questionType == "OpenEnded")
+                {
+                    var booleanQuestionResponse = new WellnessOpenEndedQuestionCheckinResponse()
+                    {
+                        UserId = wellnessResponseQuestionsDTO.UserId,
+                        WellnessOpenEndedQuestionId = questionResponse.QuestionId,
+                        AnswerText = (string)questionResponse.Response,
+                        WellnessCheckinId = wellnesssCheckinId,
+                        CreatedAt = DateTime.Now
+                    };
+                    openEndedQuestionResponses.Add(booleanQuestionResponse);
+                }
             }
 
             await _WellnessCheckinQuestionBusinessLogicService.AddMultipleChoiceCheckinResponses(multipleChoiceQuestionResponses);
             await _WellnessCheckinQuestionBusinessLogicService.AddScaleCheckinResponses(scaleQuestionResponses);
             await _WellnessCheckinQuestionBusinessLogicService.AddBooleanCheckinResponses(booleanQuestionResponses);
+            await _WellnessCheckinQuestionBusinessLogicService.AddOpenEndedCheckinResponses(openEndedQuestionResponses);
 
             return Ok(responseDTO);
         }

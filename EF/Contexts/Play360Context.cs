@@ -20,8 +20,10 @@ namespace play_360.EF.Contexts
         public DbSet<WellnessCheckin> WellnessCheckin { get; set; }
         public DbSet<WellnessScaleQuestionCheckinResponse> WellnessScaleQuestionCheckinResponse { get; set; }
         public DbSet<WellnessBooleanQuestionCheckinResponse> WellnessBooleanQuestionCheckinResponse { get; set; }
+        public DbSet<WellnessOpenEndedQuestion> WellnessOpenEndedQuestion { get; set; }
         public DbSet<UserAchievement> UserAchievement { get; set; }
         public DbSet<Referral> Referral { get; set; }
+        public DbSet<WellnessOpenEndedQuestionCheckinResponse> WellnessOpenEndedQuestionCheckinResponse { get; set; }
 
         public Play360Context(DbContextOptions<Play360Context> options) : base(options) { }
 

@@ -8,5 +8,6 @@ namespace play_360.DTOs
         public IList<WellnessMultipleChoiceQuestion> WellnessMultipleChoiceQuestionsAndAnswers { get; set; } = new List<WellnessMultipleChoiceQuestion>();
         public IList<WellnessScaleQuestion> WellnessScaleQuestionsAndAnswers { get; set; } = new List<WellnessScaleQuestion>();
         public IList<WellnessBooleanQuestion> WellnessBooleanQuestionsAndAnswers { get; set; } = new List<WellnessBooleanQuestion>();
+        public IList<WellnessOpenEndedQuestion> WellnessOpenEndedQuestionsAndAnswers { get; set; } = new List<WellnessOpenEndedQuestion>();
     }
 }

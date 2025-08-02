@@ -3,7 +3,7 @@
     public class UserQuestionResponse
     {
         public int QuestionId { get; set; }
-        public int AnswerId { get; set; }
+        public object Response { get; set; }
         public required string QuestionType { get; set; }
     }
 }
