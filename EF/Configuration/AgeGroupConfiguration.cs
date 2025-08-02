@@ -9,6 +9,14 @@ namespace play_360.EF.Configuration
         public void Configure(EntityTypeBuilder<AgeGroup> builder)
         {
             builder.Property(property => property.Description).IsRequired();
+
+            builder.HasData(
+                new AgeGroup() 
+                {
+                    Id = 1, 
+                    Description = "All"
+                }
+            );
         }
     }
 }

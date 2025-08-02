@@ -44,7 +44,7 @@ namespace play_360.Controllers
                 responseDTO.Message = "Wellness questions could not be loaded.";
                 responseDTO.Data = null;
                 responseDTO.IsSuccessful = false;
-                return BadRequest(responseDTO);
+                return Ok(responseDTO);
             }
 
             wellnessQuestionsAndAnswersDTO.WellnessMultipleChoiceQuestionsAndAnswers = allMultipleChoiceQuestionsAndAnswers;

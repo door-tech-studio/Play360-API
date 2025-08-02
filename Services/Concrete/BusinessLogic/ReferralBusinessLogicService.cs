@@ -11,6 +11,12 @@ namespace play_360.Services.Concrete.BusinessLogic
         { 
             _ReferralRepositoryService = ReferralRepositoryService;
         }
+
+        public async Task<IList<Referral>> GetReferralsByUserId(int userId)
+        {
+            var userReferrals = await _ReferralRepositoryService.GetReferralsByUserId(userId);
+            return userReferrals;
+        }
         public async Task<int> Add(Referral referral)
         {
             var saveFlag = await _ReferralRepositoryService.Add(referral);

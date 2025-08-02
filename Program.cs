@@ -12,14 +12,29 @@ using play_360.Services.Concrete.BusinessLogic;
 using play_360.Services.Concrete.DataAccess;
 using play_360.Services.Concrete.Messaging;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options => options.AddPolicy("developmentCORS", policy =>
+{
+    policy
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .WithOrigins("*")
+    .Build();
+}));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("Play360DBConnection");
 builder.Services.AddDbContext<Play360Context>(options => options.UseSqlServer(connectionString));
@@ -76,6 +91,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options => // UseSwaggerUI is called only in Development.
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
@@ -99,6 +120,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
+app.UseCors("developmentCORS");
 app.UseAuthentication();
 app.UseAuthorization();
 

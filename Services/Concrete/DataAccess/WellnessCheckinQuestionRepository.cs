@@ -14,89 +14,31 @@ namespace play_360.Services.Concrete.DataAccess
         {
             _Play360Context = Play360Context;
         }
-        public async Task<IList<WellnessMultipleChoiceQuestionsAndAnswers>> GetMultipleChoiceQuestionsAndAnswers()
+        public async Task<IList<WellnessMultipleChoiceQuestion>> GetMultipleChoiceQuestionsAndAnswers()
         {
-            var allMultipleChoiceQuestionsAndAnswers = new List<WellnessMultipleChoiceQuestionsAndAnswers>();
+            var getAllMultipleChoiceQuestions = await _Play360Context.WellnessMultipleChoiceQuestion
+                .Include(question => question.WellnessMultipleChoiceAnswers)
+                .ToListAsync();
 
-            var getAllMultipleChoiceQuestions = await _Play360Context.WellnessMultipleChoiceQuestion.ToListAsync();
-            var getAllMultipleChoiceAnswers =  await _Play360Context.WellnessMultipleChoiceAnswer.ToListAsync();
-
-            foreach (var question in getAllMultipleChoiceQuestions)
-            {
-                var questionId = question.Id;
-                var wellnessMultipleChoiceQuestionAndAnswers = new WellnessMultipleChoiceQuestionsAndAnswers();
-                wellnessMultipleChoiceQuestionAndAnswers.MultipleChoiceQuestion = question;
-
-                foreach (var answer in getAllMultipleChoiceAnswers)
-                {
-                    var wellnessMultipleChoiceQuestionId = answer.WellnessMultipleChoiceQuestionId;
-
-                    if (questionId == wellnessMultipleChoiceQuestionId)
-                    {
-                        wellnessMultipleChoiceQuestionAndAnswers.WellnessMultipleChoiceAnswers.Add(answer);
-                    }
-                }
-
-                allMultipleChoiceQuestionsAndAnswers.Add(wellnessMultipleChoiceQuestionAndAnswers);
-            }
-
-            return allMultipleChoiceQuestionsAndAnswers;
+            return getAllMultipleChoiceQuestions;
         }
 
-        public async Task<IList<WellnessScaleQuestionsAndAnswers>> GetScaleQuestionsAndAnswers()
+        public async Task<IList<WellnessScaleQuestion>> GetScaleQuestionsAndAnswers()
         {
-            var allScaleQuestionsAndAnswers = new List<WellnessScaleQuestionsAndAnswers>();
+            var getScaleQuestions = await _Play360Context.WellnessScaleQuestion
+                .Include(question => question.WellnessScaleQuestionAnswers)
+                .ToListAsync();
 
-            var getScaleQuestions = await _Play360Context.WellnessScaleQuestion.ToListAsync();
-            var getScaleQuestionAnswers = await _Play360Context.WellnessScaleQuestionAnswer.ToListAsync();
-
-            foreach (var question in getScaleQuestions)
-            {
-                var questionId = question.Id;
-                var wellnessMultipleChoiceQuestionAndAnswers = new WellnessScaleQuestionsAndAnswers();
-                wellnessMultipleChoiceQuestionAndAnswers.WellnessScaleQuestion = question;
-
-                foreach (var answer in getScaleQuestionAnswers)
-                {
-                    var wellnessMultipleChoiceQuestionId = answer.WellnessScaleQuestionId;
-
-                    if (questionId == wellnessMultipleChoiceQuestionId)
-                    {
-                        wellnessMultipleChoiceQuestionAndAnswers.WellnessScaleQuestionAnswers.Add(answer);
-                    }
-                }
-                allScaleQuestionsAndAnswers.Add(wellnessMultipleChoiceQuestionAndAnswers);
-            }
-
-            return allScaleQuestionsAndAnswers;
+            return getScaleQuestions;
         }
 
-        public async Task<IList<WellnessBooleanQuestionsAndAnswers>> GetBooleanQuestionsAndAnswers()
+        public async Task<IList<WellnessBooleanQuestion>> GetBooleanQuestionsAndAnswers()
         {
-            var allBooleanQuestionsAndAnswers = new List<WellnessBooleanQuestionsAndAnswers>();
+            var getBooleanQuestions = await _Play360Context.WellnessBooleanQuestion
+                .Include(question => question.WellnessBooleanQuestionAnswers)
+                .ToListAsync();
 
-            var getBooleanQuestions = await _Play360Context.WellnessBooleanQuestion.ToListAsync();
-            var getBooleanQuestionAnswers = await _Play360Context.WellnessBooleanQuestionAnswer.ToListAsync();
-
-            foreach (var question in getBooleanQuestions)
-            {
-                var questionId = question.Id;
-                var wellnessBooleanQuestionAndAnswers = new WellnessBooleanQuestionsAndAnswers();
-                wellnessBooleanQuestionAndAnswers.WellnessBooleanQuestion = question;
-
-                foreach (var answer in getBooleanQuestionAnswers)
-                {
-                    var wellnessBooleanQuestionId = answer.WellnessBooleanQuestionId;
-
-                    if (questionId == wellnessBooleanQuestionId)
-                    {
-                        wellnessBooleanQuestionAndAnswers.WellnessBooleanQuestionAnswers.Add(answer);
-                    }
-                }
-                allBooleanQuestionsAndAnswers.Add(wellnessBooleanQuestionAndAnswers);
-            }
-
-            return allBooleanQuestionsAndAnswers;
+            return getBooleanQuestions;
         }
 
         public async Task<int> AddWellnessCheckin(WellnessCheckin wellnessCheckin)

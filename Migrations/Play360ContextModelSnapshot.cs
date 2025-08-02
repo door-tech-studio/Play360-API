@@ -47,12 +47,20 @@ namespace play_360.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("AgeGroup");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "All"
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.Credit", b =>
@@ -483,6 +491,35 @@ namespace play_360.Migrations
                     b.ToTable("ProfileTeam");
                 });
 
+            modelBuilder.Entity("play_360.EF.Models.QuestionCategoryType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestionCategoryType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Physical"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Mental"
+                        });
+                });
+
             modelBuilder.Entity("play_360.EF.Models.QuestionType", b =>
                 {
                     b.Property<int>("Id")
@@ -510,10 +547,6 @@ namespace play_360.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ReferralCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReferralStatusId")
                         .HasColumnType("int");
@@ -591,20 +624,23 @@ namespace play_360.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPopiAccepting")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -614,12 +650,70 @@ namespace play_360.Migrations
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ReferralCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "bsngema7@gmail.com",
+                            FirstName = "Bongi",
+                            IdentityNumber = "9003205674083",
+                            IsPopiAccepting = true,
+                            LastName = "Ngema",
+                            Password = "12345",
+                            ReferralCode = "AaBbCc",
+                            UpdatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "yenzom@icloud.com",
+                            FirstName = "Yenzo",
+                            IdentityNumber = "9003205674083",
+                            IsPopiAccepting = true,
+                            LastName = "Mdladla",
+                            Password = "12345",
+                            ReferralCode = "BbCcDd",
+                            UpdatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "stephen@icloud.com",
+                            FirstName = "Stephen",
+                            IdentityNumber = "9003205674083",
+                            IsPopiAccepting = true,
+                            LastName = "Engelbrecht",
+                            Password = "12345",
+                            ReferralCode = "CcDdEe",
+                            UpdatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ndlovumpilo@icloud.com",
+                            FirstName = "Mpilo",
+                            IdentityNumber = "9003205674083",
+                            IsPopiAccepting = true,
+                            LastName = "Ndlovu",
+                            Password = "12345",
+                            ReferralCode = "DdEeFe",
+                            UpdatedAt = new DateTime(2025, 8, 1, 14, 30, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.UserAchievement", b =>
@@ -679,6 +773,48 @@ namespace play_360.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WellnessBooleanQuestion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "Do you have any injuries or pain?"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 2,
+                            QuestionText = "Do you feel mentally exhausted?"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 2,
+                            QuestionText = "Did you practice mindfulness today?"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 2,
+                            QuestionText = "Any injuries or stress this week?"
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionAnswer", b =>
@@ -701,6 +837,56 @@ namespace play_360.Migrations
                     b.HasIndex("WellnessBooleanQuestionId");
 
                     b.ToTable("WellnessBooleanQuestionAnswer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnswerText = "True",
+                            WellnessBooleanQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnswerText = "False",
+                            WellnessBooleanQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnswerText = "True",
+                            WellnessBooleanQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnswerText = "False",
+                            WellnessBooleanQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AnswerText = "True",
+                            WellnessBooleanQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AnswerText = "False",
+                            WellnessBooleanQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AnswerText = "True",
+                            WellnessBooleanQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AnswerText = "False",
+                            WellnessBooleanQuestionId = 4
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionCheckinResponse", b =>
@@ -782,6 +968,62 @@ namespace play_360.Migrations
                     b.HasIndex("WellnessMultipleChoiceQuestionId");
 
                     b.ToTable("WellnessMultipleChoiceAnswer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnswerText = "Good",
+                            WellnessMultipleChoiceQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnswerText = "Okay",
+                            WellnessMultipleChoiceQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnswerText = "Bad",
+                            WellnessMultipleChoiceQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnswerText = "Good",
+                            WellnessMultipleChoiceQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AnswerText = "Okay",
+                            WellnessMultipleChoiceQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AnswerText = "Bad",
+                            WellnessMultipleChoiceQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AnswerText = "Good",
+                            WellnessMultipleChoiceQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AnswerText = "Okay",
+                            WellnessMultipleChoiceQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AnswerText = "Bad",
+                            WellnessMultipleChoiceQuestionId = 3
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessMultipleChoiceCheckinResponse", b =>
@@ -842,6 +1084,38 @@ namespace play_360.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WellnessMultipleChoiceQuestion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 1, 15, 31, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "How do you feel today?"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 1, 15, 31, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "Do you feel muscle soreness?"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 1, 15, 31, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "How did your week feel overall?"
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessQuestion", b =>
@@ -874,6 +1148,35 @@ namespace play_360.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WellnessQuestion");
+                });
+
+            modelBuilder.Entity("play_360.EF.Models.WellnessQuestionFrequencyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WellnessQuestionFrequencyType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Daily"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Weekly"
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessResponse", b =>
@@ -936,6 +1239,48 @@ namespace play_360.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WellnessScaleQuestion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "How much energy do you have?"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 1,
+                            QuestionText = "How well did you sleep last night?"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 2,
+                            QuestionText = "How motivated do you feel today ?"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AgeGroupId = 1,
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            FrequencyTypeId = 1,
+                            IsActive = true,
+                            QuestionCategoryId = 2,
+                            QuestionText = "How focused were you during training today?"
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestionAnswer", b =>
@@ -961,6 +1306,288 @@ namespace play_360.Migrations
                     b.HasIndex("WellnessScaleQuestionId");
 
                     b.ToTable("WellnessScaleQuestionAnswer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnswerText = "1",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnswerText = "2",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnswerText = "3",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnswerText = "4",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AnswerText = "5",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AnswerText = "6",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AnswerText = "7",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AnswerText = "8",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AnswerText = "9",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AnswerText = "10",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AnswerText = "1",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AnswerText = "2",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AnswerText = "3",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AnswerText = "4",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AnswerText = "5",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AnswerText = "6",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AnswerText = "7",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AnswerText = "8",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 19,
+                            AnswerText = "9",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            AnswerText = "10",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 21,
+                            AnswerText = "1",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 22,
+                            AnswerText = "2",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 23,
+                            AnswerText = "3",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 24,
+                            AnswerText = "4",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 25,
+                            AnswerText = "5",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 26,
+                            AnswerText = "6",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 27,
+                            AnswerText = "7",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 28,
+                            AnswerText = "8",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 29,
+                            AnswerText = "9",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 30,
+                            AnswerText = "10",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 31,
+                            AnswerText = "1",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 32,
+                            AnswerText = "2",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 33,
+                            AnswerText = "3",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 34,
+                            AnswerText = "4",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 35,
+                            AnswerText = "5",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 36,
+                            AnswerText = "6",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 37,
+                            AnswerText = "7",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 38,
+                            AnswerText = "8",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 39,
+                            AnswerText = "9",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 40,
+                            AnswerText = "10",
+                            CreatedAt = new DateTime(2025, 8, 2, 8, 58, 0, 0, DateTimeKind.Unspecified),
+                            WellnessScaleQuestionId = 4
+                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessScaleQuestionCheckinResponse", b =>

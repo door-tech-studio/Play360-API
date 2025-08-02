@@ -19,7 +19,37 @@ namespace play_360.EF.Configuration
                 .HasMany(e => e.WellnessMultipleChoiceAnswers)
                 .WithOne(e => e.WellnessMultipleChoiceQuestion)
                 .HasForeignKey(e => e.WellnessMultipleChoiceQuestionId)
-                .IsRequired();  
+                .IsRequired();
+
+            builder.HasData(
+                new WellnessMultipleChoiceQuestion() 
+                { 
+                    Id=1,
+                    AgeGroupId = 1,
+                    FrequencyTypeId = 1,
+                    QuestionCategoryId = 1,
+                    QuestionText = "How do you feel today?",
+                    CreatedAt = new DateTime(2025, 08, 01, 15, 31, 0),
+                },
+                new WellnessMultipleChoiceQuestion()
+                {
+                    Id = 2,
+                    AgeGroupId = 1,
+                    FrequencyTypeId = 1,
+                    QuestionCategoryId = 1,
+                    QuestionText = "Do you feel muscle soreness?",
+                    CreatedAt = new DateTime(2025, 08, 01, 15, 31, 0),
+                },
+                new WellnessMultipleChoiceQuestion()
+                {
+                    Id = 3,
+                    AgeGroupId = 1,
+                    FrequencyTypeId = 1,
+                    QuestionCategoryId = 1,
+                    QuestionText = "How did your week feel overall?",
+                    CreatedAt = new DateTime(2025, 08, 01, 15, 31, 0),
+                }
+            );
         }
     }
 }

@@ -92,6 +92,17 @@ namespace play_360.Controllers
         public async Task<ActionResult<DataResponseDTO>> Register([FromBody] RegisterDTO registerDTO)
         {
             var DataResponse = new DataResponseDTO();
+          
+            var doesEmailAlreadyExist = await _UserBusinessLogicService.IsUserExist(registerDTO.Email);
+            if (doesEmailAlreadyExist) 
+            {
+                DataResponse.Message = "Something went wrong. Email already exists.";
+                DataResponse.Data = null;
+                DataResponse.IsSuccessful = false;
+                return Ok(DataResponse);
+            }
+
+            var randomReferralCodeForRegisteringUser = await GenerateRandomReferralCode();
             var user = new User()
             {
                 Email = registerDTO.Email,
@@ -99,55 +110,51 @@ namespace play_360.Controllers
                 IsPopiAccepting = false,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
+                IdentityNumber = registerDTO.IdentityNumber,
+                ReferralCode = randomReferralCodeForRegisteringUser,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName
             };
 
-            var isUserExist = await _UserBusinessLogicService.IsUserExist(registerDTO.Email);
-            if (isUserExist) 
+            var registeredUser = await _UserBusinessLogicService.AddUser(user);
+
+            if (registeredUser == 0)
             {
-                DataResponse.Message = "User already exists";
-                DataResponse.Data = null;
+                DataResponse.Message = "Something went wrong. Could Not Add User.";
                 DataResponse.IsSuccessful = false;
+                DataResponse.Data = null;
                 return Ok(DataResponse);
             }
 
-            User? referrerUser = null;
+
             if (registerDTO.ReferrerCode != null)
             {
-                referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
+                var referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
                 if (referrerUser == null) 
                 {
-                    DataResponse.Message = "Reference Code does not exist";
+                    DataResponse.Message = "Something went wrong. Reference Code does not exist.";
                     DataResponse.Data = null;
                     DataResponse.IsSuccessful = false;
                     return Ok(DataResponse);
                 }
-            }
 
-            var registeredUser = await _UserBusinessLogicService.AddUser(user);
-            if (registeredUser == 0)
-            {
-                DataResponse.Message = "Could Not Add User.";
-                DataResponse.IsSuccessful = false;
-                DataResponse.Data = null;
-                return Ok(DataResponse);
-            }
+                var referral = new Referral()
+                {
+                    ReffererUserId = referrerUser.Id,
+                    RefferedUserId = registeredUser,
+                    ReferralStatusId = 1,
+                    CreatedAt = DateTime.Now
+                };
 
-            var referral = new Referral() 
-            { 
-                ReffererUserId = referrerUser.Id,
-                RefferedUserId = registeredUser,
-                ReferralStatusId = 1,
-                CreatedAt = DateTime.Now
-            };
+                var isReferralInserted = await _ReferralBusinessLogicService.Add(referral);
 
-            var isReferralIserted = await _ReferralBusinessLogicService.Add(referral);
-
-            if (isReferralIserted == 0)
-            {
-                DataResponse.Message = "Could Not Add Referral.";
-                DataResponse.IsSuccessful = false;
-                DataResponse.Data = null;
-                return Ok(DataResponse);
+                if (isReferralInserted == 0)
+                {
+                    DataResponse.Message = "Something went wrong. Could Not Add Referral.";
+                    DataResponse.IsSuccessful = false;
+                    DataResponse.Data = null;
+                    return Ok(DataResponse);
+                }
             }
 
             DataResponse.Message = "User Added.";
@@ -155,6 +162,41 @@ namespace play_360.Controllers
             DataResponse.Data = registeredUser;
 
             return Ok(DataResponse);
+        }
+
+        private async Task<string> GenerateRandomReferralCode()
+        {
+            var randomReferralCode = string.Empty;
+            var randomPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+            var random = new Random();
+            
+            while (randomReferralCode.Length <= 6)
+            {
+                var randomNumber = random.Next(0, 52);
+
+                var randomCharacter = randomPool[randomNumber];
+                randomReferralCode += randomCharacter;
+
+                if (randomReferralCode.Length == 6)
+                {
+                    var doesReferralCodeExist = await DoesReferralCodeAlreadyExist(randomReferralCode);
+                    if (doesReferralCodeExist)
+                    {
+                        randomReferralCode = string.Empty;
+                    }
+                }
+            }
+
+            return randomReferralCode;
+        }
+
+        private async Task<bool> DoesReferralCodeAlreadyExist(string generatedReferralCode)
+        {
+            var userFromReferralCode = await _UserBusinessLogicService.GetUserByReferralCode(generatedReferralCode);
+            if (userFromReferralCode != null) { return true; }
+
+            return false;
         }
     }
 }

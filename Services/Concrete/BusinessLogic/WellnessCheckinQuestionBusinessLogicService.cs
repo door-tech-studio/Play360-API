@@ -14,19 +14,19 @@ namespace play_360.Services.Concrete.BusinessLogic
             _WellnessCheckinQuestionRepository = WellnessCheckinQuestionRepository;
         }
 
-        public async Task<IList<WellnessMultipleChoiceQuestionsAndAnswers>> GetMultipleChoiceQuestionsAndAnswers()
+        public async Task<IList<WellnessMultipleChoiceQuestion>> GetMultipleChoiceQuestionsAndAnswers()
         {
             var allMultipleChoiceQuestionsAndAnswers = await _WellnessCheckinQuestionRepository.GetMultipleChoiceQuestionsAndAnswers();
             return allMultipleChoiceQuestionsAndAnswers;
         }
 
-        public async Task<IList<WellnessScaleQuestionsAndAnswers>> GetScaleQuestionsAndAnswers()
+        public async Task<IList<WellnessScaleQuestion>> GetScaleQuestionsAndAnswers()
         {
             var allScaleQuestionsAndAnswers = await _WellnessCheckinQuestionRepository.GetScaleQuestionsAndAnswers();
             return allScaleQuestionsAndAnswers;
         }
 
-        public async Task<IList<WellnessBooleanQuestionsAndAnswers>> GetBooleanQuestionsAndAnswers()
+        public async Task<IList<WellnessBooleanQuestion>> GetBooleanQuestionsAndAnswers()
         {
             var allBooleanQuestionsAndAnswers = await _WellnessCheckinQuestionRepository.GetBooleanQuestionsAndAnswers();
             return allBooleanQuestionsAndAnswers;
