@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using play_360.DTOs;
 using play_360.EF.Models;
 using play_360.Services.Abstration.BusinessLogic;
-using play_360.Services.Concrete.BusinessLogic;
-using System.Reflection;
 
 namespace play_360.Controllers
 {
