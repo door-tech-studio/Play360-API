@@ -1,4 +1,5 @@
-﻿using play_360.EF.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using play_360.EF.Contexts;
 using play_360.EF.Models;
 using play_360.Services.Abstration.DataAccess;
 
@@ -18,6 +19,12 @@ namespace play_360.Services.Concrete.DataAccess
             var savedflag = await _DbContext.SaveChangesAsync();
 
             return savedflag;
+        }
+
+        public async Task<IList<Credit>> GetUserCredits(int userId)
+        {
+            var allUsrCredits = await _DbContext.Credits.Where(credit => credit.UserId == userId).ToListAsync();
+            return allUsrCredits;
         }
     }
 }

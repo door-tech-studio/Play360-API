@@ -18,5 +18,11 @@ namespace play_360.Services.Concrete.BusinessLogic
             var isCreditBatchAdded = await _CreditRepository.AddCredit(creditBatch);
             return isCreditBatchAdded;
         }
+
+        public async Task<IList<Credit>> GetUserCredits(int userId)
+        {
+            var allUserCredits = await _CreditRepository.GetUserCredits(userId);
+            return allUserCredits;
+        }
     }
 }

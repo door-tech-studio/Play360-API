@@ -3,6 +3,6 @@
     public class CreditType
     {
         public int Id { get; set; }
-        public int Description { get; set; }
+        public string Description { get; set; }
     }
 }

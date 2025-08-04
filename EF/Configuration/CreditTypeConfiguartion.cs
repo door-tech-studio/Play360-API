@@ -11,6 +11,19 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.Id).IsRequired();
             builder.Property(property => property.Description).IsRequired();
 
+            builder.HasData(
+                new CreditType() 
+                { 
+                    Id = 1, 
+                    Description="Earned"
+                },
+                 new CreditType()
+                 {
+                     Id = 2,
+                     Description = "Purchased"
+                 }
+            );
+
         }
     }
 }

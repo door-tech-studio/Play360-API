@@ -21,7 +21,7 @@ builder.Services.AddCors(options => options.AddPolicy("developmentCORS", policy 
     policy
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .WithOrigins("*")
+    .WithOrigins("*", "http://ec2-52-14-238-110.us-east-2.compute.amazonaws.com:5000")
     .Build();
 }));
 
@@ -106,7 +106,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/weather", () =>
 {
     var forecast =  Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
