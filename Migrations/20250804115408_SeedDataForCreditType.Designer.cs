@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using play_360.EF.Contexts;
 
@@ -11,9 +12,11 @@ using play_360.EF.Contexts;
 namespace play_360.Migrations
 {
     [DbContext(typeof(Play360Context))]
-    partial class Play360ContextModelSnapshot : ModelSnapshot
+    [Migration("20250804115408_SeedDataForCreditType")]
+    partial class SeedDataForCreditType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,8 +87,6 @@ namespace play_360.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreditTypeId");
 
                     b.HasIndex("UserId");
 
@@ -1755,19 +1756,11 @@ namespace play_360.Migrations
 
             modelBuilder.Entity("play_360.EF.Models.Credit", b =>
                 {
-                    b.HasOne("play_360.EF.Models.CreditType", "CreditType")
-                        .WithMany("Credits")
-                        .HasForeignKey("CreditTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("play_360.EF.Models.User", "User")
                         .WithMany("Credits")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CreditType");
 
                     b.Navigation("User");
                 });
@@ -2011,11 +2004,6 @@ namespace play_360.Migrations
             modelBuilder.Entity("play_360.EF.Models.Credit", b =>
                 {
                     b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.CreditType", b =>
-                {
-                    b.Navigation("Credits");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.Profile", b =>

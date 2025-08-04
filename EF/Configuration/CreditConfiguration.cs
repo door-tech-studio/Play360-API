@@ -13,11 +13,11 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.Amount).IsRequired();
             builder.Property(property => property.CreatedAt).IsRequired();
 
-            builder
-                .HasOne(e => e.User)
-                .WithMany(e => e.Credits)
-                .HasForeignKey(e => e.UserId)
-                .IsRequired();
+            //builder
+            //    .HasOne(e => e.User)
+            //    .WithMany(e => e.Credits)
+            //    .HasForeignKey(e => e.UserId)
+            //    .IsRequired();
 
             builder
                .HasOne(e => e.Transaction)

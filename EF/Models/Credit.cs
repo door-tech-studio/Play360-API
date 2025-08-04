@@ -9,5 +9,6 @@
         public DateTime CreatedAt { get; set; }
         public User User { get; set; } = null;
         public Transaction? Transaction { get; set; }
+        public CreditType? CreditType { get; set; }
     }
 }

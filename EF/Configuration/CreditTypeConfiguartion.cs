@@ -11,6 +11,12 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.Id).IsRequired();
             builder.Property(property => property.Description).IsRequired();
 
+            builder
+                .HasMany(creditType => creditType.Credits)
+                .WithOne(credit => credit.CreditType)
+                .HasForeignKey(credit => credit.CreditTypeId)
+                .IsRequired();
+
             builder.HasData(
                 new CreditType() 
                 { 
