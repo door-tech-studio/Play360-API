@@ -24,7 +24,10 @@ namespace play_360.EF.Contexts
         public DbSet<UserAchievement> UserAchievement { get; set; }
         public DbSet<Referral> Referral { get; set; }
         public DbSet<WellnessOpenEndedQuestionCheckinResponse> WellnessOpenEndedQuestionCheckinResponse { get; set; }
-
+        public DbSet<SportTypes> SportTypes { get; set; }
+        public DbSet<UserSport> UserSports { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+        
         public Play360Context(DbContextOptions<Play360Context> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

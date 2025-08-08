@@ -11,6 +11,11 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.Id).IsRequired();
             builder.Property(property => property.Description).IsRequired();
 
+            builder.HasData(
+                new DominantSide { Id = 1, Description = "Right" },
+                new DominantSide { Id = 2, Description = "Left" },
+                new DominantSide { Id = 3, Description = "Ambidextrous" }
+            );
         }
     }
 }
