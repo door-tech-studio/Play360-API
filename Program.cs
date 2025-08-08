@@ -83,6 +83,8 @@ builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
 builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
 builder.Services.AddScoped<IReferralRepositoryService, ReferralRepositoryService>();
 builder.Services.AddScoped<IReferralBusinessLogicService, ReferralBusinessLogicService>();
+builder.Services.AddScoped<ISportTypeRepository, SportTypeRepository>();
+builder.Services.AddScoped<ISportTypeBusinessLogicService, SportTypeBusinessLogicService>();
 
 
 var app = builder.Build();

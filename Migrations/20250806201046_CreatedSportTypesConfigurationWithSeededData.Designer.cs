@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using play_360.EF.Contexts;
 
@@ -11,9 +12,11 @@ using play_360.EF.Contexts;
 namespace play_360.Migrations
 {
     [DbContext(typeof(Play360Context))]
-    partial class Play360ContextModelSnapshot : ModelSnapshot
+    [Migration("20250806201046_CreatedSportTypesConfigurationWithSeededData")]
+    partial class CreatedSportTypesConfigurationWithSeededData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,23 +139,6 @@ namespace play_360.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DominantSide");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Right"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Left"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Ambidextrous"
-                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.FeelingType", b =>
@@ -272,7 +258,7 @@ namespace play_360.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profile");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.ProfileAchievement", b =>
@@ -842,31 +828,6 @@ namespace play_360.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserAchievement");
-                });
-
-            modelBuilder.Entity("play_360.EF.Models.UserSport", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SportTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DominantSideId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "SportTypeId");
-
-                    b.HasIndex("SportTypeId");
-
-                    b.ToTable("UserSports");
                 });
 
             modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestion", b =>
@@ -2034,25 +1995,6 @@ namespace play_360.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("play_360.EF.Models.UserSport", b =>
-                {
-                    b.HasOne("play_360.EF.Models.SportTypes", "SportType")
-                        .WithMany("UserSports")
-                        .HasForeignKey("SportTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("play_360.EF.Models.User", "User")
-                        .WithMany("UserSports")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SportType");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("play_360.EF.Models.WellnessBooleanQuestionAnswer", b =>
                 {
                     b.HasOne("play_360.EF.Models.WellnessBooleanQuestion", "WellnessBooleanQuestion")
@@ -2167,11 +2109,6 @@ namespace play_360.Migrations
                     b.Navigation("ProfileTeams");
                 });
 
-            modelBuilder.Entity("play_360.EF.Models.SportTypes", b =>
-                {
-                    b.Navigation("UserSports");
-                });
-
             modelBuilder.Entity("play_360.EF.Models.User", b =>
                 {
                     b.Navigation("Credits");
@@ -2185,8 +2122,6 @@ namespace play_360.Migrations
                     b.Navigation("Transactions");
 
                     b.Navigation("UserAchievements");
-
-                    b.Navigation("UserSports");
 
                     b.Navigation("WellnessCheckins");
 

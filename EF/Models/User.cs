@@ -23,6 +23,7 @@
         public ICollection<WellnessResponse> WellnessResponses { get; } = new List<WellnessResponse>();
         public ICollection<WellnessWeeklySummary> WellnessWeeklySummaries { get; } = new List<WellnessWeeklySummary>();
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+        public ICollection<UserSport> UserSports { get; set; } = new List<UserSport>();
         public Profile? Profile { get; set; }
 
     }
