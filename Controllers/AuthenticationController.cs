@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using play_360.DTOs;
+using play_360.EF.Contexts;
 using play_360.EF.Models;
 using play_360.Services.Abstration;
 using play_360.Services.Abstration.BusinessLogic;
+using play_360.Services.Abstration.Domain;
 using play_360.Services.Abstration.Messaging;
-using play_360.Services.Concrete.BusinessLogic;
 
 namespace play_360.Controllers
 {
@@ -17,17 +18,26 @@ namespace play_360.Controllers
         private readonly IUserBusinessLogicService _UserBusinessLogicService;
         private readonly IEmailMessager _EmailMessager;
         private readonly IReferralBusinessLogicService _ReferralBusinessLogicService;
+        private readonly ISouthAfricanIdentityValidator _SouthAfricanIdentityValidator;
+        private readonly ISouthAfricanPassportValidator _SouthAfricanPassportValidator;
+        private readonly Play360Context _Context;
         public AuthenticationController(
             IJWTService IJWTService,
             IUserBusinessLogicService UserBusinessLogicService,
             IEmailMessager EmailMessager,
-            IReferralBusinessLogicService ReferralBusinessLogicService
+            IReferralBusinessLogicService ReferralBusinessLogicService,
+            ISouthAfricanIdentityValidator SouthAfricanIdentityValidator,
+            ISouthAfricanPassportValidator SouthAfricanPassportValidator,
+            Play360Context Context
         ) 
         { 
             _IJWTService = IJWTService;
             _UserBusinessLogicService = UserBusinessLogicService;
             _EmailMessager = EmailMessager;
             _ReferralBusinessLogicService = ReferralBusinessLogicService;
+            _SouthAfricanIdentityValidator = SouthAfricanIdentityValidator;
+            _SouthAfricanPassportValidator = SouthAfricanPassportValidator;
+            _Context = Context;
         }
 
         [AllowAnonymous]        
@@ -92,76 +102,129 @@ namespace play_360.Controllers
         public async Task<ActionResult<DataResponseDTO>> Register([FromBody] RegisterDTO registerDTO)
         {
             var DataResponse = new DataResponseDTO();
+
+            using (var transaction = _Context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    var emailAlreadyExist = await _UserBusinessLogicService.IsUserExist(registerDTO.Email);
+                    if (emailAlreadyExist)
+                    {
+                        DataResponse.Message = "Something went wrong. Email already exists.";
+                        DataResponse.Data = null;
+                        DataResponse.IsSuccessful = false;
+                        return Ok(DataResponse);
+                    }
+
+                    if (string.IsNullOrEmpty(registerDTO.IdentityNumber) && string.IsNullOrEmpty(registerDTO.PassportNumber))
+                    {
+                        DataResponse.Message = "Something went wrong. Need atleast PassportNumber or IDNumber.";
+                        DataResponse.Data = null;
+                        DataResponse.IsSuccessful = false;
+                        return Ok(DataResponse);
+                    }
+
+                    if (!string.IsNullOrEmpty(registerDTO.IdentityNumber))
+                    {
+                        if (!_SouthAfricanIdentityValidator.IsAfricanIdentityValid(registerDTO.IdentityNumber!))
+                        {
+                            DataResponse.Message = "Something went wrong. ID Number is not valid.";
+                            DataResponse.Data = null;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(registerDTO.PassportNumber))
+                    {
+                        if (!_SouthAfricanPassportValidator.IsPassportNumberValid(registerDTO.PassportNumber!))
+                        {
+                            DataResponse.Message = "Something went wrong. Passport is not valid.";
+                            DataResponse.Data = null;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+                    }
+
+
+                    var randomReferralCodeForRegisteringUser = await GenerateRandomReferralCode();
+                    var user = new User()
+                    {
+                        Email = registerDTO.Email,
+                        Password = registerDTO.Password,
+                        IsPopiAccepting = false,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                        IdentityNumber = registerDTO.IdentityNumber,
+                        PassportNumber = registerDTO.PassportNumber,
+                        ReferralCode = randomReferralCodeForRegisteringUser,
+                        FirstName = registerDTO.FirstName,
+                        LastName = registerDTO.LastName
+                    };
+
+                    var registeredUser = await _UserBusinessLogicService.AddUser(user);
+
+                    if (registeredUser == 0)
+                    {
+                        DataResponse.Message = "Something went wrong. Could Not Add User.";
+                        DataResponse.IsSuccessful = false;
+                        DataResponse.Data = null;
+                        return Ok(DataResponse);
+                    }
+
+
+                    if (registerDTO.ReferrerCode != null)
+                    {
+                        var referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
+                        if (referrerUser == null)
+                        {
+                            DataResponse.Message = "Something went wrong. Reference Code does not exist.";
+                            DataResponse.Data = null;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+
+                        var referral = new Referral()
+                        {
+                            ReffererUserId = referrerUser.Id,
+                            RefferedUserId = registeredUser,
+                            ReferralStatusId = 1,
+                            CreatedAt = DateTime.Now
+                        };
+
+                        var isReferralInserted = await _ReferralBusinessLogicService.Add(referral);
+
+                        if (isReferralInserted == 0)
+                        {
+                            DataResponse.Message = "Something went wrong. Could Not Add Referral.";
+                            DataResponse.IsSuccessful = false;
+                            DataResponse.Data = null;
+                            return Ok(DataResponse);
+                        }
+                    }
+
+                    DataResponse.Message = "User Added.";
+                    DataResponse.IsSuccessful = true;
+                    DataResponse.Data = registeredUser;
+
+                    transaction.Commit();
+
+                    return Ok(DataResponse); 
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+
+                    DataResponse.Message = $"Something went wrong: {ex.Message}";
+                    DataResponse.Data = null;
+                    DataResponse.IsSuccessful = false;
+                    return Ok(DataResponse);
+                }
+            }
+            
           
-            var doesEmailAlreadyExist = await _UserBusinessLogicService.IsUserExist(registerDTO.Email);
-            if (doesEmailAlreadyExist) 
-            {
-                DataResponse.Message = "Something went wrong. Email already exists.";
-                DataResponse.Data = null;
-                DataResponse.IsSuccessful = false;
-                return Ok(DataResponse);
-            }
-
-            var randomReferralCodeForRegisteringUser = await GenerateRandomReferralCode();
-            var user = new User()
-            {
-                Email = registerDTO.Email,
-                Password = registerDTO.Password,
-                IsPopiAccepting = false,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                IdentityNumber = registerDTO.IdentityNumber,
-                ReferralCode = randomReferralCodeForRegisteringUser,
-                FirstName = registerDTO.FirstName,
-                LastName = registerDTO.LastName
-            };
-
-            var registeredUser = await _UserBusinessLogicService.AddUser(user);
-
-            if (registeredUser == 0)
-            {
-                DataResponse.Message = "Something went wrong. Could Not Add User.";
-                DataResponse.IsSuccessful = false;
-                DataResponse.Data = null;
-                return Ok(DataResponse);
-            }
-
-
-            if (registerDTO.ReferrerCode != null)
-            {
-                var referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
-                if (referrerUser == null) 
-                {
-                    DataResponse.Message = "Something went wrong. Reference Code does not exist.";
-                    DataResponse.Data = null;
-                    DataResponse.IsSuccessful = false;
-                    return Ok(DataResponse);
-                }
-
-                var referral = new Referral()
-                {
-                    ReffererUserId = referrerUser.Id,
-                    RefferedUserId = registeredUser,
-                    ReferralStatusId = 1,
-                    CreatedAt = DateTime.Now
-                };
-
-                var isReferralInserted = await _ReferralBusinessLogicService.Add(referral);
-
-                if (isReferralInserted == 0)
-                {
-                    DataResponse.Message = "Something went wrong. Could Not Add Referral.";
-                    DataResponse.IsSuccessful = false;
-                    DataResponse.Data = null;
-                    return Ok(DataResponse);
-                }
-            }
-
-            DataResponse.Message = "User Added.";
-            DataResponse.IsSuccessful = true;
-            DataResponse.Data = registeredUser;
-
-            return Ok(DataResponse);
+            
         }
 
         private async Task<string> GenerateRandomReferralCode()
@@ -185,6 +248,7 @@ namespace play_360.Controllers
                     {
                         randomReferralCode = string.Empty;
                     }
+                    break;
                 }
             }
 
@@ -197,6 +261,16 @@ namespace play_360.Controllers
             if (userFromReferralCode != null) { return true; }
 
             return false;
+        }
+
+        private bool isSAIdValid(string IDNumber)
+        {
+            return true;
+        }
+
+        private bool isSAPassportValid(string IDNumber)
+        {
+            return true;
         }
     }
 }

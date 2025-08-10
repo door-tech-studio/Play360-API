@@ -12,12 +12,13 @@ namespace play_360.Services.Concrete.Messaging
             {
                 using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
                 {
-                    smtpClient.Credentials = new NetworkCredential("username", "password");
+                    smtpClient.Credentials = new NetworkCredential("bsngema7@gmail.com", "*EmaNgadini96#");
                     smtpClient.EnableSsl = true;
+                    smtpClient.UseDefaultCredentials = false;
 
                     using (var mailMessage = new MailMessage())
                     {
-                        mailMessage.From = new MailAddress("sender@example.com");
+                        mailMessage.From = new MailAddress("bsngema7@gmail.com");
                         mailMessage.To.Add(toAddress);
                         mailMessage.Subject = subject;
                         mailMessage.Body = body;

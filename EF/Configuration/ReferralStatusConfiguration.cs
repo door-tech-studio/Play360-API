@@ -11,6 +11,11 @@ namespace play_360.EF.Configuration
             builder.Property(property => property.Id).IsRequired();
             builder.Property(property => property.Description).IsRequired();
 
+            builder.HasData(
+                new ReferralStatus() { Id = 1, Description = "Active" },
+                new ReferralStatus() { Id = 2, Description = "InActive" }
+            );
+
         }
     }
 }

@@ -6,10 +6,12 @@ using play_360.EF.Contexts;
 using play_360.Services.Abstration;
 using play_360.Services.Abstration.BusinessLogic;
 using play_360.Services.Abstration.DataAccess;
+using play_360.Services.Abstration.Domain;
 using play_360.Services.Abstration.Messaging;
 using play_360.Services.Concrete;
 using play_360.Services.Concrete.BusinessLogic;
 using play_360.Services.Concrete.DataAccess;
+using play_360.Services.Concrete.Domain;
 using play_360.Services.Concrete.Messaging;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -83,6 +85,8 @@ builder.Services.AddScoped<IAcheivementRepository, AcheivementRepository>();
 builder.Services.AddScoped<IAcheivementBusinessLogicService, AcheivementBusinessLogicService>();
 builder.Services.AddScoped<IReferralRepositoryService, ReferralRepositoryService>();
 builder.Services.AddScoped<IReferralBusinessLogicService, ReferralBusinessLogicService>();
+builder.Services.AddScoped<ISouthAfricanIdentityValidator, SouthAfricanIdentityValidator>();
+builder.Services.AddScoped<ISouthAfricanPassportValidator, SouthAfricanPassportValidator>();
 
 
 var app = builder.Build();
@@ -106,7 +110,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weather", () =>
+app.MapGet("/test1", () =>
 {
     var forecast =  Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast

@@ -12,8 +12,9 @@
         public bool IsPopiAccepting { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public required string IdentityNumber { get; set; }
+        public string? IdentityNumber { get; set; }
         public required string ReferralCode { get; set; }
+        public string? PassportNumber { get; set; }
 
         public ICollection<Credit> Credits { get; } = new List<Credit>();
         public ICollection<Referral> Referrals { get; } = new List<Referral>();

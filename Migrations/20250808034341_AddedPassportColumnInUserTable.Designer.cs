@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using play_360.EF.Contexts;
 
@@ -11,9 +12,11 @@ using play_360.EF.Contexts;
 namespace play_360.Migrations
 {
     [DbContext(typeof(Play360Context))]
-    partial class Play360ContextModelSnapshot : ModelSnapshot
+    [Migration("20250808034341_AddedPassportColumnInUserTable")]
+    partial class AddedPassportColumnInUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -587,25 +590,12 @@ namespace play_360.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Description")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("ReferralStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "InActive"
-                        });
                 });
 
             modelBuilder.Entity("play_360.EF.Models.Transaction", b =>

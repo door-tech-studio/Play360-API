@@ -7,7 +7,8 @@
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required string Bio { get; set; }
-        public required string IdentityNumber { get; set; }
+        public string? IdentityNumber { get; set; }
+        public string? PassportNumber { get; set; }
         public string? ReferrerCode { get; set; }
     }
 }
