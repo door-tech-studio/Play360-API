@@ -51,5 +51,27 @@ namespace play_360.Services.Concrete.DataAccess
 
             return true;
         }
+
+        public async Task<bool> IsIDNumberExist(string userIDNumber)
+        {
+            var user = await _DbContext.Users.Where(user => user.IdentityNumber == userIDNumber).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> IsPassportNumberExist(string userPassportNumber)
+        {
+            var user = await _DbContext.Users.Where(user => user.PassportNumber == userPassportNumber).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

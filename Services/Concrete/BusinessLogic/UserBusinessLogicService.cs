@@ -38,5 +38,14 @@ namespace play_360.Services.Concrete.BusinessLogic
         {
             return await _UserRepository.IsUserExist(userEmail);
         }
+
+        public async Task<bool> IsIDNumberExist(string userIDNumber)
+        {
+            return await _UserRepository.IsIDNumberExist(userIDNumber);
+        }
+        public async Task<bool> IsPassportNumberExist(string userPassportNumber)
+        {
+            return await _UserRepository.IsPassportNumberExist(userPassportNumber);
+        }
     }
 }

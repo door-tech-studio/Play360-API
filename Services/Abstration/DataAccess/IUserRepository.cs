@@ -9,5 +9,7 @@ namespace play_360.Services.Abstration.DataAccess
         public Task<int> AddUser(User user);
         public Task<User> GetUserById(int Id);
         public Task<bool> IsUserExist(string userEmail);
+        public Task<bool> IsIDNumberExist(string userIDNumber);
+        public Task<bool> IsPassportNumberExist(string userPassportNumber);
     }
 }

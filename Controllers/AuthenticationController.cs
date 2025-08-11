@@ -112,7 +112,7 @@ namespace play_360.Controllers
                     if (emailAlreadyExist)
                     {
                         DataResponse.Message = "Something went wrong. Email already exists.";
-                        DataResponse.Data = null;
+                        DataResponse.Data = null!;
                         DataResponse.IsSuccessful = false;
                         return Ok(DataResponse);
                     }
@@ -120,17 +120,26 @@ namespace play_360.Controllers
                     if (string.IsNullOrEmpty(registerDTO.IdentityNumber) && string.IsNullOrEmpty(registerDTO.PassportNumber))
                     {
                         DataResponse.Message = "Something went wrong. Need atleast PassportNumber or IDNumber.";
-                        DataResponse.Data = null;
+                        DataResponse.Data = null!;
                         DataResponse.IsSuccessful = false;
                         return Ok(DataResponse);
                     }
 
                     if (!string.IsNullOrEmpty(registerDTO.IdentityNumber))
                     {
+                        var doesSAIdAlreadyExist = await _UserBusinessLogicService.IsIDNumberExist(registerDTO.IdentityNumber);
+                        if (doesSAIdAlreadyExist)
+                        {
+                            DataResponse.Message = "Something went wrong. SA Identification number already exists.";
+                            DataResponse.Data = null!;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+
                         if (!_SouthAfricanIdentityValidator.IsAfricanIdentityValid(registerDTO.IdentityNumber!))
                         {
                             DataResponse.Message = "Something went wrong. ID Number is not valid.";
-                            DataResponse.Data = null;
+                            DataResponse.Data = null!;
                             DataResponse.IsSuccessful = false;
                             return Ok(DataResponse);
                         }
@@ -138,6 +147,15 @@ namespace play_360.Controllers
 
                     if (!string.IsNullOrEmpty(registerDTO.PassportNumber))
                     {
+                        var doesSAPassportNumberAlreadyExist = await _UserBusinessLogicService.IsPassportNumberExist(registerDTO.PassportNumber);
+                        if (doesSAPassportNumberAlreadyExist)
+                        {
+                            DataResponse.Message = "Something went wrong.Passport number already exists.";
+                            DataResponse.Data = null!;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+
                         if (!_SouthAfricanPassportValidator.IsPassportNumberValid(registerDTO.PassportNumber!))
                         {
                             DataResponse.Message = "Something went wrong. Passport is not valid.";
@@ -147,6 +165,18 @@ namespace play_360.Controllers
                         }
                     }
 
+                    User referrerUser = null!;
+                    if (registerDTO.ReferrerCode != null)
+                    {
+                        referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
+                        if (referrerUser == null)
+                        {
+                            DataResponse.Message = "Something went wrong. Reference Code does not exist.";
+                            DataResponse.Data = null;
+                            DataResponse.IsSuccessful = false;
+                            return Ok(DataResponse);
+                        }
+                    }
 
                     var randomReferralCodeForRegisteringUser = await GenerateRandomReferralCode();
                     var user = new User()
@@ -169,22 +199,13 @@ namespace play_360.Controllers
                     {
                         DataResponse.Message = "Something went wrong. Could Not Add User.";
                         DataResponse.IsSuccessful = false;
-                        DataResponse.Data = null;
+                        DataResponse.Data = null!;
                         return Ok(DataResponse);
                     }
 
 
-                    if (registerDTO.ReferrerCode != null)
+                    if (referrerUser != null)
                     {
-                        var referrerUser = await _UserBusinessLogicService.GetUserByReferralCode(registerDTO.ReferrerCode);
-                        if (referrerUser == null)
-                        {
-                            DataResponse.Message = "Something went wrong. Reference Code does not exist.";
-                            DataResponse.Data = null;
-                            DataResponse.IsSuccessful = false;
-                            return Ok(DataResponse);
-                        }
-
                         var referral = new Referral()
                         {
                             ReffererUserId = referrerUser.Id,
@@ -199,7 +220,7 @@ namespace play_360.Controllers
                         {
                             DataResponse.Message = "Something went wrong. Could Not Add Referral.";
                             DataResponse.IsSuccessful = false;
-                            DataResponse.Data = null;
+                            DataResponse.Data = null!;
                             return Ok(DataResponse);
                         }
                     }
