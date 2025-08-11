@@ -159,7 +159,7 @@ namespace play_360.Controllers
                         if (!_SouthAfricanPassportValidator.IsPassportNumberValid(registerDTO.PassportNumber!))
                         {
                             DataResponse.Message = "Something went wrong. Passport is not valid.";
-                            DataResponse.Data = null;
+                            DataResponse.Data = null!;
                             DataResponse.IsSuccessful = false;
                             return Ok(DataResponse);
                         }
@@ -172,7 +172,7 @@ namespace play_360.Controllers
                         if (referrerUser == null)
                         {
                             DataResponse.Message = "Something went wrong. Reference Code does not exist.";
-                            DataResponse.Data = null;
+                            DataResponse.Data = null!;
                             DataResponse.IsSuccessful = false;
                             return Ok(DataResponse);
                         }
@@ -238,7 +238,7 @@ namespace play_360.Controllers
                     transaction.Rollback();
 
                     DataResponse.Message = $"Something went wrong: {ex.Message}";
-                    DataResponse.Data = null;
+                    DataResponse.Data = null!;
                     DataResponse.IsSuccessful = false;
                     return Ok(DataResponse);
                 }
